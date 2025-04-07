@@ -1,0 +1,467 @@
+﻿
+@model WebBanSach.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .book-image {
+        width: 80%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* đổ bóng mềm */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .book-image:hover {
+            transform: scale(1.1); /* phóng to nhẹ khi hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* tăng bóng khi hover */
+        }
+
+    .product-item figcaption {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .add-to-cart {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+        .add-to-cart:hover {
+            background-color: black;
+        }
+
+    .product-item {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+    /* scrool to section|*/
+    .scroll-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        list-style: none;
+        padding: 30px 0;
+        background-color: #f3f1eb; /* nền nhẹ cổ điển */
+        margin: 0;
+        border-bottom: 2px solid #c1b69c;
+    }
+
+        .scroll-tabs li a {
+            font-family: 'Georgia', serif; /* font cổ điển */
+            font-size: 20px;
+            font-weight: bold;
+            color: #5a4d36;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .scroll-tabs li a:hover,
+            .scroll-tabs li a.active {
+                color: #3e3221;
+            }
+
+            .scroll-tabs li a::after {
+                content: '';
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                background-color: #a38745;
+                bottom: 0;
+                left: 0;
+                transition: width 0.3s ease;
+            }
+
+            .scroll-tabs li a:hover::after,
+            .scroll-tabs li a.active::after {
+                width: 100%;
+            }
+
+            h1 {
+                text-align: center;
+                margin: 0;
+                margin-top: 30px;
+                font-size: 75px;
+            }
+</style>
+
+<h1 class="">Choose Your Best Books</h1>
+
+
+<ul class="scroll-tabs">
+    <li><a href="#featured-books">Featured</a></li>
+    <li><a href="#popular-books">BestSeller</a></li>
+    <li><a href="#special-offer">Special Offers</a></li>
+    <li><a href="#categories-books">Categories</a></li>
+    <li><a href="#best-selling">Best Selling</a></li>
+    <li><a href="#latest-blog">Blog</a></li>
+</ul>
+
+<section id="featured-books" class="py-5 my-5">
+    <div class="container">
+        <div class="section-header align-center">
+            <div class="title"><span>Mỗi Ngày Tôi Chọn Một Niềm Vui</span></div>
+            <h2 class="section-title">Featured Books</h2>
+        </div>
+        <div class="row">
+            @foreach (var book in Model.FeaturedBooks)
+            {
+                @Html.Partial("_BookItemPartial", book)
+            }
+        </div>
+    </div>
+</section>
+
+<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="section-header align-center">
+            <div class="title"><span>Top Sellers</span></div>
+            <h2 class="section-title">BestSeller Books</h2>
+        </div>
+        <div class="row">
+            @foreach (var book in Model.PopularBooks)
+            {
+                @Html.Partial("_BookItemPartial", book)
+            }
+        </div>
+    </div>
+</section>
+
+<section id="special-offer" class="bookshelf pb-5 mb-5">
+    <div class="section-header align-center">
+        <div class="title"><span>Limited Deals</span></div>
+        <h2 class="section-title">Books with Offer</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            @foreach (var book in Model.SpecialOfferBooks)
+            {
+                @Html.Partial("_BookItemPartial", book)
+            }
+        </div>
+    </div>
+</section>
+
+<section id="categories-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="section-header align-center">
+            <div class="title"><span>Mỗi Ngày Tôi Chọn Một Niềm Vui</span></div>
+            <h2 class="section-title">Categories Books</h2>
+        </div>
+
+        <ul class="tabs">
+            <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+            @foreach (var category in Model.Categories)
+            {
+                <li data-tab-target="#category-@category.Id" class="tab">@category.Name</li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            <div id="all-genre" data-tab-content class="active">
+                <div class="row">
+                    @foreach (var book in Model.PopularBooks)
+                    {
+                        @Html.Partial("_BookItemPartial", book)
+                    }
+                </div>
+            </div>
+
+            @foreach (var category in Model.Categories)
+            {
+                <div id="category-@category.Id" data-tab-content>
+                    <div class="row">
+                        @foreach (var book in Model.PopularBooks.Where(b => b.CategoryId == category.Id))
+                        {
+                            @Html.Partial("_BookItemPartial", book)
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Các section khác như quotation, blog, download app, v.v. giữ nguyên nếu không cần chỉnh sửa -->
+
+
+
+<section id="best-selling" class="leaf-pattern-overlay">
+    <div class="corner-pattern-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <figure class="products-thumb">
+                            <img src="~/Asset/images/single-image.jpg" alt="book" class="single-image">
+                        </figure>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="product-entry">
+                            <h2 class="section-title divider">Best Selling Book</h2>
+
+                            <div class="products-content">
+                                <div class="author-name">By Timbur Hood</div>
+                                <h3 class="item-title">Birds gonna be happy</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet,
+                                    libero ipsum enim pharetra hac.
+                                </p>
+                                <div class="item-price">45.00₫</div>
+                                <div class="btn-wrap">
+                                    <a href="#" class="btn-accent-arrow">
+                                        shop it now <i class="icon icon-ns-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- / row -->
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="quotation" class="align-center pb-5 mb-5">
+    <div class="inner-content">
+        <h2 class="section-title divider">Quote of the day</h2>
+        <blockquote data-aos="fade-up">
+            <q>
+                “The more that you read, the more things you will know. The more that you learn, the more places
+                you’ll go.”
+            </q>
+            <div class="author-name">Dr. Seuss</div>
+        </blockquote>
+    </div>
+</section>
+
+<section id="subscribe">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="title-element">
+                            <h2 class="section-title divider">Subscribe to our newsletter</h2>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="subscribe-content" data-aos="fade-up">
+                            <p>
+                                Sed eu feugiat amet, libero ipsum enim pharetra hac dolor sit amet, consectetur. Elit
+                                adipiscing enim pharetra hac.
+                            </p>
+                            <form id="form">
+                                <input type="text" name="email" placeholder="Enter your email addresss here">
+                                <button class="btn-subscribe">
+                                    <span>send</span>
+                                    <i class="icon icon-send"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="latest-blog" class="py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Read our articles</span>
+                    </div>
+                    <h2 class="section-title">Latest Articles</h2>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <article class="column" data-aos="fade-up">
+
+                            <figure>
+                                <a href="#" class="image-hvr-effect">
+                                    <img src="~/Asset/images/post-img1.jpg" alt="post" class="post-image">
+                                </a>
+                            </figure>
+
+                            <div class="post-item">
+                                <div class="meta-date">Mar 30, 2021</div>
+                                <h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+                                <div class="links-element">
+                                    <div class="categories">inspiration</div>
+                                    <div class="social-links">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="icon icon-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-behance-square"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!--links-element-->
+
+                            </div>
+                        </article>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <article class="column" data-aos="fade-up" data-aos-delay="200">
+                            <figure>
+                                <a href="#" class="image-hvr-effect">
+                                    <img src="~/Asset/images/post-img2.jpg" alt="post" class="post-image">
+                                </a>
+                            </figure>
+                            <div class="post-item">
+                                <div class="meta-date">Mar 29, 2021</div>
+                                <h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+                                <div class="links-element">
+                                    <div class="categories">inspiration</div>
+                                    <div class="social-links">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="icon icon-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-behance-square"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!--links-element-->
+
+                            </div>
+                        </article>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <article class="column" data-aos="fade-up" data-aos-delay="400">
+                            <figure>
+                                <a href="#" class="image-hvr-effect">
+                                    <img src="~/Asset/images/post-img3.jpg" alt="post" class="post-image">
+                                </a>
+                            </figure>
+                            <div class="post-item">
+                                <div class="meta-date">Feb 27, 2021</div>
+                                <h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+                                <div class="links-element">
+                                    <div class="categories">inspiration</div>
+                                    <div class="social-links">
+                                        <ul>
+                                            <li>
+                                                <a href="#"><i class="icon icon-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-twitter"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i class="icon icon-behance-square"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div><!--links-element-->
+
+                            </div>
+                        </article>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="btn-wrap align-center">
+                        <a href="#" class="btn btn-outline-accent btn-accent-arrow" tabindex="0">
+                            Read All Articles<i class="icon icon-ns-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="download-app" class="leaf-pattern-overlay">
+    <div class="corner-pattern-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <figure>
+                            <img src="~/Asset/images/device.png" alt="phone" class="single-image">
+                        </figure>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="app-info">
+                            <h2 class="section-title divider">Download our app now !</h2>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus
+                                liberolectus nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna.
+                                Adipiscing fames semper erat ac in suspendisse iaculis.
+                            </p>
+                            <div class="google-app">
+                                <img src="~/Asset/images/google-play.jpg" alt="google play">
+                                <img src="~/Asset/images/app-store.jpg" alt="app store">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
