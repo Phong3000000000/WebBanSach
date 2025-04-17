@@ -143,6 +143,7 @@
     <Content Include="Asset\icomoon\icomoon.css" />
     <Content Include="Asset\icomoon\Read Me.txt" />
     <Content Include="Asset\images\app-store.jpg" />
+    <Content Include="Asset\images\chatboticon.png" />
     <Content Include="Asset\images\chocolat\close.png" />
     <Content Include="Asset\images\chocolat\fullscreen-black.png" />
     <Content Include="Asset\images\chocolat\fullscreen.png" />
@@ -231,6 +232,10 @@
     <Compile Include="Migrations\202504051041304_InitialCreate1.Designer.cs">
       <DependentUpon>202504051041304_InitialCreate1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504131421548_sync_model_fix.cs" />
+    <Compile Include="Migrations\202504131421548_sync_model_fix.designer.cs">
+      <DependentUpon>202504131421548_sync_model_fix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -309,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504051041304_InitialCreate1.resx">
       <DependentUpon>202504051041304_InitialCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504131421548_sync_model_fix.resx">
+      <DependentUpon>202504131421548_sync_model_fix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
