@@ -236,6 +236,10 @@
     <Compile Include="Migrations\202504131421548_sync_model_fix.designer.cs">
       <DependentUpon>202504131421548_sync_model_fix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504170832214_UpdateDB.cs" />
+    <Compile Include="Migrations\202504170832214_UpdateDB.Designer.cs">
+      <DependentUpon>202504170832214_UpdateDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -317,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504131421548_sync_model_fix.resx">
       <DependentUpon>202504131421548_sync_model_fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504170832214_UpdateDB.resx">
+      <DependentUpon>202504170832214_UpdateDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
